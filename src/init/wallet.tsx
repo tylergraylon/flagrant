@@ -6,6 +6,9 @@ import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
   TrustWalletAdapter,
+  LedgerWalletAdapter,
+  SafePalWalletAdapter,
+  SalmonWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { ReactNode, useEffect, useState } from "react";
 
@@ -13,8 +16,11 @@ import { ReactNode, useEffect, useState } from "react";
 const solanaWeb3JsAdapter = new SolanaAdapter({
   wallets: [
     new SolflareWalletAdapter(),
-    // new PhantomWalletAdapter(),
+    new PhantomWalletAdapter(),
+    new LedgerWalletAdapter(),
     new TrustWalletAdapter(),
+    new SafePalWalletAdapter(),
+    new SalmonWalletAdapter(),
   ],
 });
 
