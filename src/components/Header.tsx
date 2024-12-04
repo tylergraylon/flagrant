@@ -1,13 +1,8 @@
 "use client";
-
-import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { LuSearch } from "react-icons/lu";
 import { MdMenu } from "react-icons/md";
-
 const Header = () => {
-  const { open, close } = useAppKit();
-  const { address, isConnected } = useAppKitAccount();
   return (
     <div className="w-full py-3.5 px-4 text-[#9B9B9B] gap-4 flex justify-between items-center">
       <div className="flex flex-1 items-center gap-2 md:gap-4">
