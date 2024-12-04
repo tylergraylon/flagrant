@@ -15,12 +15,13 @@ import { ReactNode, useEffect, useState } from "react";
 // 0. Set up Solana Adapter
 const solanaWeb3JsAdapter = new SolanaAdapter({
   wallets: [
-    new SolflareWalletAdapter(),
-    new PhantomWalletAdapter(),
-    new LedgerWalletAdapter(),
     new TrustWalletAdapter(),
-    new SafePalWalletAdapter(),
-    new SalmonWalletAdapter(),
+    // new LedgerWalletAdapter(),
+    // new SolflareWalletAdapter(),
+    // new PhantomWalletAdapter(),
+
+    // new SafePalWalletAdapter(),
+    // new SalmonWalletAdapter(),
   ],
 });
 
