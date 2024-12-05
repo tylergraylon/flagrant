@@ -135,14 +135,6 @@ export class SwapToken {
         slippage: 50,
       });
 
-      //   const wallet = new Wallet(
-      //     Keypair.fromSecretKey(
-      //       bs58.decode(
-      //         '3UekLwYiMBS7hFYjKXDjqpjypJHrqsiZEYu4JgL9NVdaXMkASSkEmoEX1u1cuq8J41RRUo2qpWqGWYxdWZz7qEj1',
-      //       ),
-      //     ),
-      //   );
-
       const { transaction, swapRes } =
         await swapService.serialiseDeserialiseTransaction({
           quoteResponse: quote,
